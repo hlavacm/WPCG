@@ -1,0 +1,57 @@
+﻿<ContentControl x:Class="Netcorex.Views.Controls.RangeControl"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:common="clr-namespace:Netcorex.Common"
+                mc:Ignorable="d"
+                d:DataContext="{d:DesignInstance Type=common:IRangable}">
+  <Border Style="{DynamicResource SystemBorderStyle}">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto"
+                          MinWidth="25" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto"
+                          MinWidth="25" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+
+      <Image Grid.Row="0"
+             Grid.Column="0"
+             Source="pack://application:,,,/Resources/Icons/ui-seek-bar.png" />
+
+      <TextBlock Grid.Row="0"
+                 Grid.Column="1"
+                 HorizontalAlignment="Right"
+                 Text="{Binding Path=Minimum, ElementName=PostGenerationRangeSlider}"
+                 Style="{DynamicResource DefaultTextBlockStyle}" />
+
+      <Slider Grid.Row="0"
+              Grid.Column="2"
+              x:Name="PostGenerationRangeSlider"
+              Value="{Binding Path=Value}"
+              Minimum="{Binding Path=Minimum}"
+              Maximum="{Binding Path=Maximum}"
+              SmallChange="{Binding Path=SmallChange}"
+              LargeChange="{Binding Path=LargeChange}"
+              IsSnapToTickEnabled="True"
+              Style="{DynamicResource DefaultSliderStyle}" />
+
+      <TextBlock Grid.Row="0"
+                 Grid.Column="3"
+                 HorizontalAlignment="Left"
+                 Text="{Binding Path=Value, ElementName=PostGenerationRangeSlider}"
+                 Style="{DynamicResource DefaultTextBlockStyle}" />
+
+      <Image Grid.Row="0"
+             Grid.Column="4"
+             Source="pack://application:,,,/Resources/Icons/ui-seek-bar-100.png" />
+
+    </Grid>
+  </Border>
+</ContentControl>

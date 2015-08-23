@@ -1,0 +1,164 @@
+﻿<windows:WindowBase x:Class="Netcorex.MainWindow"
+										xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+										xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+										xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+										xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+										xmlns:netcorex="clr-namespace:Netcorex"
+										xmlns:properties="clr-namespace:Netcorex.Properties"
+										xmlns:localizations="clr-namespace:Netcorex.Localizations"
+										xmlns:enums="clr-namespace:Netcorex.Enums"
+										xmlns:views="clr-namespace:Netcorex.Views"
+										xmlns:windows="clr-namespace:Netcorex.Windows"
+										mc:Ignorable="d"
+										d:DataContext="{d:DesignInstance Type=netcorex:MainContext}"
+										Title="WordPress Content Generator"
+										WindowStartupLocation="CenterScreen"
+										WindowState="{Binding Path=MainWindowState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+										Width="{Binding Path=MainWindowWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+										Height="{Binding Path=MainWindowHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+										Topmost="{Binding Path=MainWindowTopmost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+										Icon="/Resources/WordPress.ico"
+										ResizeMode="CanResizeWithGrip"
+										ContentRendered="OnContentRendered">
+	<!--Left="{Binding Path=MainWindowLeft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static Properties:Settings.Default}}"
+										Top="{Binding Path=MainWindowTop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static Properties:Settings.Default}}"-->
+	<DockPanel>
+		<!-- HEADER -->
+		<!-- MENU -->
+		<Menu DockPanel.Dock="Top"
+					IsMainMenu="True">
+			<!-- FILE -->
+			<MenuItem Header="{x:Static localizations:Titles.File}">
+				<MenuItem Header="{x:Static localizations:Titles.Exit}"
+									Command="{Binding Path=ExitCommand}"
+									InputGestureText="Alt+F4">
+					<MenuItem.Icon>
+						<Image Source="pack://application:,,,/Resources/Icons/cross-button.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>
+			<!-- EDIT -->
+			<MenuItem Header="{x:Static localizations:Titles.Edit}">
+				<MenuItem Header="{x:Static localizations:Titles.Generate}"
+									Command="{Binding Path=GenerateCommand}"
+									InputGestureText="F5">
+					<MenuItem.Icon>
+						<Image Source="pack://application:,,,/Resources/Icons/gear.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>
+			<!-- VIEW -->
+			<MenuItem Header="{x:Static localizations:Titles.View}">
+				<MenuItem Header="{Binding Path=StatusBarMenuTitle}"
+									Command="{Binding Path=ShowStatusBarCommand}"
+									InputGestureText="F4">
+					<MenuItem.Icon>
+						<Image Source="pack://application:,,,/Resources/Icons/ui-status-bar.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>
+			<!-- TOOLS -->
+			<MenuItem Header="{x:Static localizations:Titles.Tools}">
+				<MenuItem Header="{x:Static localizations:Titles.Options}"
+									Command="{Binding Path=OptionsCommand}"
+									InputGestureText="F12">
+					<MenuItem.Icon>
+						<Image Source="pack://application:,,,/Resources/Icons/wrench-screwdriver.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>
+			<!-- WINDOW -->
+			<MenuItem Header="{x:Static localizations:Titles.Window}">
+				<MenuItem Header="{x:Static localizations:Titles.AlwaysOnTop}"
+									IsCheckable="True"
+									IsChecked="{Binding Path=Topmost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+				<MenuItem Header="{x:Static localizations:Titles.CenterScreen}"
+									Command="{Binding Path=CenterScreenCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type windows:WindowBase}}}">
+					<MenuItem.Icon>
+						<Image Source="pack://application:,,,/Resources/Icons/application-resize-actual.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="{x:Static localizations:Titles.DefaultSize}"
+									Command="{Binding Path=DefaultSizeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type windows:WindowBase}}}">
+					<MenuItem.Icon>
+						<Image Source="pack://application:,,,/Resources/Icons/application-resize.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>
+			<!-- HELP -->
+			<MenuItem Header="{x:Static localizations:Titles.Help}">
+				<MenuItem Header="{x:Static localizations:Titles.ApplicationHelp}"
+									Command="{Binding Path=HelpCommand}"
+									InputGestureText="F1">
+					<MenuItem.Icon>
+						<Image Source="pack://application:,,,/Resources/Icons/question-button.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="{x:Static localizations:Titles.AboutApplication}"
+									Command="{Binding Path=AboutCommand}">
+					<MenuItem.Icon>
+						<Image Source="pack://application:,,,/Resources/Icons/information-button.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>
+		</Menu>
+		<!-- FOOTER -->
+		<StatusBar DockPanel.Dock="Bottom"
+							 Visibility="{Binding Path=MainWindowStatusBarVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+			<StatusBarItem DockPanel.Dock="Left">
+				<TextBlock Text="{Binding Path=StateTitle, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+			</StatusBarItem>
+			<StatusBarItem>
+				<ContentControl>
+					<ContentControl.Style>
+						<Style TargetType="ContentControl">
+							<Setter Property="Visibility"
+											Value="Collapsed" />
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding Path=State}"
+														 Value="{x:Static enums:ApplicationStates.Working}">
+									<Setter Property="Visibility"
+													Value="Visible" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</ContentControl.Style>
+					<ProgressBar Width="100"
+											 Height="10"
+											 Value="{Binding Path=WorkingValue}"
+											 Minimum="{Binding Path=WorkingMinimum}"
+											 Maximum="{Binding Path=WorkingMaximum}"
+											 SmallChange="1"
+											 LargeChange="10" />
+				</ContentControl>
+			</StatusBarItem>
+		</StatusBar>
+		<!-- CONTENT -->
+		<TabControl x:Name="MainTabControl"
+								SelectedIndex="{Binding Path=MainTabControlSelectedIndex, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+								Style="{DynamicResource DefaultTabControlStyle}"
+								SelectionChanged="MainTabControlOnSelectionChanged">
+			<TabItem Header="{x:Static localizations:Titles.DatabaseConnection}">
+				<views:DatabaseConnectionView DataContext="{Binding Path=DatabaseConnectionViewModel}" />
+			</TabItem>
+			<TabItem Header="{x:Static localizations:Titles.PostType}">
+				<views:PostView DataContext="{Binding Path=PostViewModel}" />
+			</TabItem>
+			<TabItem Header="{x:Static localizations:Titles.PostMeta}">
+				<views:PostMetaView DataContext="{Binding Path=PostMetaViewModel}" />
+			</TabItem>
+			<TabItem Header="{x:Static localizations:Titles.TaxonomyTerm}">
+				<views:TaxonomyTermRelationView DataContext="{Binding Path=TaxonomyTermRelationViewModel}" />
+			</TabItem>
+			<TabItem Header="{x:Static localizations:Titles.Users}"
+							 IsEnabled="False">
+			</TabItem>
+			<TabItem Header="{x:Static localizations:Titles.UserMeta}"
+							 IsEnabled="False">
+			</TabItem>
+			<TabItem Header="{x:Static localizations:Titles.Comments}"
+							 IsEnabled="False">
+			</TabItem>
+		</TabControl>
+	</DockPanel>
+</windows:WindowBase>

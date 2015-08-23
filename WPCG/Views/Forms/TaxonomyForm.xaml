@@ -1,0 +1,144 @@
+﻿<ContentControl  x:Class="Netcorex.Views.Forms.TaxonomyForm"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:models="clr-namespace:Netcorex.Models"
+                 xmlns:localizations="clr-namespace:Netcorex.Localizations"
+                 xmlns:forms="clr-namespace:Netcorex.Views.Forms"
+                 mc:Ignorable="d"
+                 d:DataContext="{d:DesignInstance Type=models:TaxonomyModel}"
+                 MinWidth="600"
+                 MinHeight="100">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"
+                          MinWidth="{DynamicResource DefaultLabelsColumnWidth}" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+
+      <!-- Id -->
+
+      <!--<TextBlock Grid.Row="0"
+             Grid.Column="0"
+             Text="{x:Static Localizations:Titles.Id}"
+             Style="{DynamicResource LabelTextBlockStyle}" />-->
+
+      <!--<TextBox Grid.Row="0"
+           Grid.Column="1"
+           Text="{Binding Path=Id}"
+           IsReadOnly="True"
+           Style="{DynamicResource DefaultTextBoxStyle}" />-->
+
+      <!-- Taxonomy -->
+
+      <TextBlock Grid.Row="1"
+                 Grid.Column="0"
+                 Text="{x:Static localizations:Titles.Taxonomy}"
+                 Style="{DynamicResource LabelTextBlockStyle}" />
+
+      <ComboBox Grid.Row="1"
+                Grid.Column="1"
+                ItemsSource="{Binding Path=Taxonomies}"
+                SelectedValue="{Binding Path=Taxonomy}"
+                SelectedValuePath="Value"
+                DisplayMemberPath="Value"
+                IsEditable="True"
+                IsTextSearchEnabled="True"
+                IsTextSearchCaseSensitive="False"
+                Style="{DynamicResource DefaultComboBoxStyle}" />
+
+      <TextBlock Grid.Row="1"
+                 Grid.Column="2"
+                 Text="*"
+                 Style="{DynamicResource DefaultTextBlockStyle}" />
+
+      <!-- Description -->
+
+      <TextBlock Grid.Row="2"
+                 Grid.Column="0"
+                 Text="{x:Static localizations:Titles.Description}"
+                 Style="{DynamicResource LabelTextBlockStyle}" />
+
+      <TextBox Grid.Row="2"
+               Grid.Column="1"
+               Text="{Binding Path=Description}"
+               MaxLength="10000"
+               Style="{DynamicResource DefaultTextBoxStyle}" />
+
+      <!-- Parent -->
+
+      <TextBlock Grid.Row="3"
+                 Grid.Column="0"
+                 Text="{x:Static localizations:Titles.Parent}"
+                 Style="{DynamicResource LabelTextBlockStyle}" />
+
+      <ComboBox Grid.Row="3"
+                Grid.Column="1"
+                ItemsSource="{Binding Path=Parents}"
+                SelectedValue="{Binding Path=Parent}"
+                SelectedValuePath="Key"
+                DisplayMemberPath="Value"
+                IsEditable="True"
+                IsTextSearchEnabled="True"
+                IsTextSearchCaseSensitive="False"
+                Style="{DynamicResource DefaultComboBoxStyle}" />
+
+      <TextBlock Grid.Row="3"
+                 Grid.Column="2"
+                 Text="*"
+                 Style="{DynamicResource DefaultTextBlockStyle}" />
+
+      <!-- Term Id -->
+
+      <TextBlock Grid.Row="4"
+                 Grid.Column="0"
+                 Text="{x:Static localizations:Titles.Term}"
+                 Visibility="{Binding Path=Visibility, ElementName=TermComboBox}"
+                 Style="{DynamicResource LabelTextBlockStyle}" />
+
+      <ComboBox Grid.Row="4"
+                Grid.Column="1"
+                Name="TermComboBox"
+                ItemsSource="{Binding Path=Terms}"
+                SelectedValue="{Binding Path=TermId}"
+                SelectedValuePath="Key"
+                DisplayMemberPath="Value"
+                IsTextSearchEnabled="True"
+                IsTextSearchCaseSensitive="False"
+                Visibility="{Binding Path=TermVisibility, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type forms:TaxonomyForm}}}"
+                Style="{DynamicResource DefaultComboBoxStyle}" />
+
+      <TextBlock Grid.Row="4"
+                 Grid.Column="2"
+                 Text="*"
+                 Visibility="{Binding Path=Visibility, ElementName=TermComboBox}"
+                 Style="{DynamicResource DefaultTextBlockStyle}" />
+			
+      <!-- Count -->
+
+      <!--<TextBlock Grid.Row="5"
+             Grid.Column="0"
+             Text="Count:"
+             Style="{DynamicResource LabelTextBlockStyle}" />-->
+
+      <!--<TextBox Grid.Row="5"
+           Grid.Column="1"
+           Text="{Binding Path=Count}"
+           MaxLength="10000"
+           Style="{DynamicResource DefaultTextBoxStyle}" />-->
+
+    </Grid>
+  </ScrollViewer>
+</ContentControl>

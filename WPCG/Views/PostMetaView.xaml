@@ -1,0 +1,52 @@
+﻿<views:WpViewBase x:Class="Netcorex.Views.PostMetaView"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                  xmlns:views="clr-namespace:Netcorex.Views"
+                  xmlns:viewModels="clr-namespace:Netcorex.ViewModels"
+                  xmlns:forms="clr-namespace:Netcorex.Views.Forms"
+                  xmlns:localizations="clr-namespace:Netcorex.Localizations"
+                  mc:Ignorable="d"
+                  d:DataContext="{d:DesignInstance Type=viewModels:PostMetaViewModel}"
+                  IsEnabled="{Binding Path=IsInitialized}">
+  <xctk:BusyIndicator IsBusy="{Binding Path=IsBusy, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                      BusyContent="{Binding Path=BusyContent}">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"
+                          MinWidth="{DynamicResource DefaultLabelsColumnWidth}" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+
+      <Button Grid.Row="0"
+              Grid.Column="0"
+              Command="{Binding Path=GenerateCommand}"
+              Style="{DynamicResource DefaultButtonStyle}">
+        <StackPanel Orientation="Horizontal">
+          <Image Source="pack://application:,,,/Resources/Icons/gear.png" />
+          <TextBlock Text="{x:Static localizations:Titles.Generate}"
+                     Style="{DynamicResource DefaultTextBlockStyle}" />
+        </StackPanel>
+      </Button>
+
+      <Separator Grid.Row="1"
+                 Grid.Column="0"
+                 Grid.ColumnSpan="2" />
+
+      <forms:PostMetaForm Grid.Row="2"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          DataContext="{Binding Path=Model}"
+                          PostVisibility="Collapsed"
+                          PostsVisibility="Visible" />
+
+    </Grid>
+  </xctk:BusyIndicator>
+</views:WpViewBase>
