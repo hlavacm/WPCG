@@ -1,0 +1,2 @@
+# WPCG
+WordPress Content Generator
